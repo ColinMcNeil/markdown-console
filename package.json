@@ -4,7 +4,8 @@
   "description": "A markdown templater for console output",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "test_live": "node test_live.js"
   },
   "author": "Colin McNeil",
   "license": "ISC",

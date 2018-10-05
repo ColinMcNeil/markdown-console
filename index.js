@@ -4,17 +4,6 @@ const chalk = require('chalk')
 const p = process.stdout.write
 const fs = require('fs')
 
-/**
-[ 'root',
-  'heading',
-  'paragraph',
-  'list',
-  'listItem',
-  'link',
-  'strong',
-  'emphasis' ]
- */
-
 function tree(mdString) {
   return unified()
   .use(markdown)
@@ -83,8 +72,6 @@ function setChalkOut(node) {
     unstyledDecoration = [' { ',' } ']
     style=style.inverse
   }
-  
-  //out += val
   return unstyledDecoration[0] +
     style(decoration[0] + val + decoration[1]) +
     unstyledDecoration[1]
@@ -93,12 +80,14 @@ function setChalkOut(node) {
 function toChalk(mdString, options) {
   let parseTree = tree(mdString)
   setStyles(parseTree)
-  fs.writeFile('example.json', JSON.stringify(parseTree), 'utf8');
   const out = setChalkOut(parseTree)
   return out 
 }
 
-function render(mdString, options) {
+function render(mdString, options, data = {}) {
+  for (let key of Object.keys(data)) {
+    mdString=mdString.replace(('${'+key+'}'), data[key])
+  }
   const out = toChalk(mdString, options)
   process.stdout.write(out)
   process.stdout.write('\n')
